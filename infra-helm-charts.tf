@@ -39,3 +39,28 @@ resource "kubectl_manifest" "cluster-autoscaler" {
   count     = length(data.kubectl_file_documents.cluster-autoscaler.documents)
   yaml_body = data.kubectl_file_documents.cluster-autoscaler.documents[count.index]
 }
+
+# Argocd
+
+resource "kubectl_manifest" "argocd-namespace" {
+  depends_on = [null_resource.get-kubeconfig]
+
+  yaml_body = <<YAML
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd
+YAML
+}
+
+data "kubectl_file_documents" "argocd" {
+  content = file("${path.module}/argo-${var.env}.yaml")
+}
+
+resource "kubectl_manifest" "argocd" {
+  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace]
+
+  count              = length(data.kubectl_file_documents.argocd.documents)
+  yaml_body          = data.kubectl_file_documents.argocd.documents[count.index]
+  override_namespace = "argocd"
+}
