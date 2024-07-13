@@ -70,7 +70,7 @@ resource "aws_iam_role" "eks-cluster-autoscaler" {
         "Effect" : "Allow",
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Principal" : {
-          "Federated" : "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}"
+          "Federated" : "arn:aws:iam::637423416520:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}"
         },
         "Condition" : {
           "StringEquals" : {
@@ -143,7 +143,7 @@ resource "aws_iam_role" "external-dns" {
         "Effect" : "Allow",
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Principal" : {
-          "Federated" : "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}"
+          "Federated" : "arn:aws:iam::637423416520:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}"
         },
         "Condition" : {
           "StringEquals" : {
