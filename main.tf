@@ -38,6 +38,7 @@ resource "aws_eks_node_group" "node-groups" {
   tags          = local.eks_tags
 }
 
+
 data "external" "oidc-thumbprint" {
   program = [
     "/usr/bin/kubergrunt", "eks", "oidc-thumbprint", "--issuer-url", "${aws_eks_cluster.main.identity[0].oidc[0].issuer}"
