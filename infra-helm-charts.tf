@@ -60,7 +60,7 @@ data "kubectl_file_documents" "argocd" {
 }
 
 resource "kubectl_manifest" "argocd" {
-  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace]
+  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace, null_resource.nginx-ingress]
 
   count              = length(data.kubectl_file_documents.argocd.documents)
   yaml_body          = data.kubectl_file_documents.argocd.documents[count.index]
@@ -69,26 +69,26 @@ resource "kubectl_manifest" "argocd" {
 
 ## Nginx Ingress
 
-# resource "null_resource" "nginx-ingress" {
-#   depends_on = [null_resource.get-kubeconfig]
-#
-#   provisioner "local-exec" {
-#     command = <<EOF
-# helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-# helm upgrade -i ngx-ingres ingress-nginx/ingress-nginx -f ${path.module}/nginx-ingress.yaml
-# EOF
-#   }
-#
-# }
+resource "null_resource" "nginx-ingress" {
+  depends_on = [null_resource.get-kubeconfig]
+
+  provisioner "local-exec" {
+    command = <<EOF
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm upgrade -i ngx-ingres ingress-nginx/ingress-nginx -f ${path.module}/nginx-ingress.yaml
+EOF
+  }
+
+}
 #
 ## External DNS
-# data "kubectl_file_documents" "external-dns" {
-#   content = file("${path.module}/external-dns.yaml")
-# }
-#
-# resource "kubectl_manifest" "external-dns" {
-#   depends_on = [null_resource.get-kubeconfig]
-#
-#   count              = length(data.kubectl_file_documents.external-dns.documents)
-#   yaml_body          = data.kubectl_file_documents.external-dns.documents[count.index]
-# }
+data "kubectl_file_documents" "external-dns" {
+  content = file("${path.module}/external-dns.yaml")
+}
+
+resource "kubectl_manifest" "external-dns" {
+  depends_on = [null_resource.get-kubeconfig]
+
+  count              = length(data.kubectl_file_documents.external-dns.documents)
+  yaml_body          = data.kubectl_file_documents.external-dns.documents[count.index]
+}
