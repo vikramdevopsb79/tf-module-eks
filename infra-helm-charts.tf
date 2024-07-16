@@ -81,14 +81,14 @@ resource "kubectl_manifest" "argocd" {
 #
 # }
 #
-# ## External DNS
-# data "kubectl_file_documents" "external-dns" {
-#   content = file("${path.module}/external-dns.yaml")
-# }
-#
-# resource "kubectl_manifest" "external-dns" {
-#   depends_on = [null_resource.get-kubeconfig]
-#
-#   count              = length(data.kubectl_file_documents.external-dns.documents)
-#   yaml_body          = data.kubectl_file_documents.external-dns.documents[count.index]
-# }
+## External DNS
+data "kubectl_file_documents" "external-dns" {
+  content = file("${path.module}/external-dns.yaml")
+}
+
+resource "kubectl_manifest" "external-dns" {
+  depends_on = [null_resource.get-kubeconfig]
+
+  count              = length(data.kubectl_file_documents.external-dns.documents)
+  yaml_body          = data.kubectl_file_documents.external-dns.documents[count.index]
+}
