@@ -30,7 +30,7 @@ resource "kubectl_manifest" "metric-server" {
 ## Cluster Autoscaler
 
 data "kubectl_file_documents" "cluster-autoscaler" {
-  content = file("${path.module}/cluster-autoscale-dev.yaml")
+  content = file("${path.module}/cluster-autoscale-dev.yml")
 }
 output "module_path" {
   value = path.module
@@ -56,7 +56,7 @@ YAML
 }
 
 data "kubectl_file_documents" "argocd" {
-  content = file("${path.module}/argo-${var.env}.yaml")
+  content = file("${path.module}/argo-${var.env}.yml")
 }
 
 resource "kubectl_manifest" "argocd" {
@@ -83,7 +83,7 @@ EOF
 #
 ## External DNS
 data "kubectl_file_documents" "external-dns" {
-  content = file("${path.module}/external-dns.yaml")
+  content = file("${path.module}/external-dns.yml")
 }
 
 resource "kubectl_manifest" "external-dns" {
