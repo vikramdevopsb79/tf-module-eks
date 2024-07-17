@@ -29,18 +29,18 @@ resource "kubectl_manifest" "metric-server" {
 
 ## Cluster Autoscaler
 
-data "kubectl_file_documents" "cluster-autoscaler" {
-  content = file("${path.module}/cluster-autoscale-dev.yaml")
-}
-# output "module_path" {
-#   value = path.module
+# data "kubectl_file_documents" "cluster-autoscaler" {
+#   content = file("${path.module}/cluster-autoscale-dev.yaml")
 # }
-resource "kubectl_manifest" "cluster-autoscaler" {
-  depends_on = [null_resource.get-kubeconfig]
-
-  count     = length(data.kubectl_file_documents.cluster-autoscaler.documents)
-  yaml_body = data.kubectl_file_documents.cluster-autoscaler.documents[count.index]
-}
+# # output "module_path" {
+# #   value = path.module
+# # }
+# resource "kubectl_manifest" "cluster-autoscaler" {
+#   depends_on = [null_resource.get-kubeconfig]
+#
+#   count     = length(data.kubectl_file_documents.cluster-autoscaler.documents)
+#   yaml_body = data.kubectl_file_documents.cluster-autoscaler.documents[count.index]
+# }
 
 # Argocd
 
