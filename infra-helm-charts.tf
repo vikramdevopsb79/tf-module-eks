@@ -32,9 +32,7 @@ resource "kubectl_manifest" "metric-server" {
 data "kubectl_file_documents" "cluster-autoscaler" {
   content = file("${path.module}/cluster-autoscale-dev.yml")
 }
-output "module_path" {
-  value = path.module
-}
+
 resource "kubectl_manifest" "cluster-autoscaler" {
   depends_on = [null_resource.get-kubeconfig]
 
