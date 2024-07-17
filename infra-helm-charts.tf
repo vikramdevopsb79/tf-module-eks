@@ -55,17 +55,17 @@ metadata:
 YAML
 }
 
-data "kubectl_file_documents" "argocd" {
-  content = file("${path.module}/argo-${var.env}.yaml")
-}
+# data "kubectl_file_documents" "argocd" {
+#   content = file("${path.module}/argo-${var.env}.yaml")
+# }
 
-resource "kubectl_manifest" "argocd" {
-  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace, null_resource.nginx-ingress]
-
-  count              = length(data.kubectl_file_documents.argocd.documents)
-  yaml_body          = data.kubectl_file_documents.argocd.documents[count.index]
-  override_namespace = "argocd"
-}
+# resource "kubectl_manifest" "argocd" {
+#   depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace, null_resource.nginx-ingress]
+#
+#   count              = length(data.kubectl_file_documents.argocd.documents)
+#   yaml_body          = data.kubectl_file_documents.argocd.documents[count.index]
+#   override_namespace = "argocd"
+# }
 
 ## Nginx Ingress
 
@@ -82,13 +82,13 @@ EOF
 }
 #
 ## External DNS
-data "kubectl_file_documents" "external-dns" {
-  content = file("${path.module}/external-dns.yaml")
-}
+# data "kubectl_file_documents" "external-dns" {
+#   content = file("${path.module}/external-dns.yaml")
+# }
 
-resource "kubectl_manifest" "external-dns" {
-  depends_on = [null_resource.get-kubeconfig]
-
-  count              = length(data.kubectl_file_documents.external-dns.documents)
-  yaml_body          = data.kubectl_file_documents.external-dns.documents[count.index]
-}
+# resource "kubectl_manifest" "external-dns" {
+#   depends_on = [null_resource.get-kubeconfig]
+#
+#   count              = length(data.kubectl_file_documents.external-dns.documents)
+#   yaml_body          = data.kubectl_file_documents.external-dns.documents[count.index]
+# }
