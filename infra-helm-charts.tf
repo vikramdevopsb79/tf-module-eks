@@ -73,7 +73,7 @@ resource "null_resource" "nginx-ingress" {
   provisioner "local-exec" {
     command = <<EOF
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm upgrade -i ngx-ingres ingress-nginx/ingress-nginx -f ${path.module}/nginx-ingress.yaml
+helm upgrade -i ngx-ingres ingress-nginx/ingress-nginx -f ${path.module}/nginx-ingress.yml
 EOF
   }
 
