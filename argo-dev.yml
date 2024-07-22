@@ -22862,7 +22862,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: argocd-dev.vikramdevops.tech
+    - host: argocd-dev.vikramdevops.store
       http:
         paths:
           - pathType: Prefix
